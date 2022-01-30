@@ -46,6 +46,13 @@ export default {
       name: 'body',
       title: 'Body',
       type: 'blockContent'
+    },
+    {
+      name: 'commentsEnabled',
+      title: 'Comments Enabled',
+      description: 'Whether or not comments can be added and viewed on the post',
+      type: 'boolean',
+      initialValue: true
     }
   ],
 

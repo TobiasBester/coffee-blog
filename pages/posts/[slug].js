@@ -12,7 +12,7 @@ import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
-import Form from '../../components/form'
+import CommentForm from '../../components/commentForm'
 
 export default function Post({ post, morePosts, preview }) {
   const router = useRouter()
@@ -42,9 +42,12 @@ export default function Post({ post, morePosts, preview }) {
               />
               <PostBody content={post.body} />
             </article>
-
-            <Comments comments={post.comments} />
-            <Form _id={post._id} />
+            {post.commentsEnabled &&
+             <>
+               <hr className="my-12"/>
+               <Comments comments={post.comments} />
+               <CommentForm _id={post._id} />
+             </>}
 
             <SectionSeparator />
             {morePosts.length > 0 && <MoreStories posts={morePosts} />}
