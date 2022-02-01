@@ -50,7 +50,7 @@ export default function CommentForm ({_id}) {
   return (
     <>
       <p className="text-xl">Join in on the conversation!</p>
-      <p className="text-md mb-4">Your email will not be displayed.</p>
+      <p className="text-md mb-4">Your email will not be published.</p>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg" disabled>
         <input {...register("_id")} type="hidden" name="_id" value={_id} />
         <label className="block mb-5">
