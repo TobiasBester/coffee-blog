@@ -8,14 +8,65 @@ import PostHeader from '../../components/post-header'
 import Comments from '../../components/comments'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/api'
+import { getAllPostsWithSlug, getPostAndMorePosts, getPostComments } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
 import CommentForm from '../../components/commentForm'
+import { useEffect, useState } from 'react'
 
-export default function Post({ post, morePosts, preview }) {
+function CommentBlock ({ post, comments, loading, error, addComment }) {
+  if (loading) {
+    return (
+      <h4 className="text-2xl">Loading Comments...</h4>
+    )
+  }
+
+  if (error) {
+    return (
+      <h4 className="text-2xl">Failed to load comments for this post.</h4>
+    )
+  }
+
+  return (
+    <>
+      <Comments comments={comments} />
+      <CommentForm _id={post._id} addComment={addComment} />
+    </>
+  )
+}
+
+export default function Post({ post, morePosts, slug, preview }) {
   const router = useRouter()
+  const [state, setState] = useState({
+    loading: true,
+    comments: [],
+    error: null,
+  })
+  const addComment = (newComment) => {
+    const comments = [...state.comments, newComment]
+    setState({
+      ...state,
+      comments
+    })
+  }
+
+  if (post.commentsEnabled) {
+    useEffect(() => {
+      getCurrentPostComments(slug)
+        .then(data => setState({
+          loading: false,
+          comments: data,
+          error: null
+        }))
+        .catch(error => setState({
+          loading: false,
+          comments: [],
+          error
+        }))
+    }, [])
+  }
+
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
@@ -45,9 +96,15 @@ export default function Post({ post, morePosts, preview }) {
             {post.commentsEnabled &&
              <>
                <hr className="my-12"/>
-               <Comments comments={post.comments} />
-               <CommentForm _id={post._id} />
-             </>}
+               <CommentBlock
+                 comments={state.comments}
+                 post={post}
+                 error={state.error}
+                 loading={state.loading}
+                 addComment={addComment}
+               />
+             </>
+            }
 
             <SectionSeparator />
             {morePosts.length > 0 && <MoreStories posts={morePosts} />}
@@ -63,6 +120,7 @@ export async function getStaticProps({ params, preview = false }) {
   return {
     props: {
       preview,
+      slug: params.slug,
       post: data?.post || null,
       morePosts: data?.morePosts || null,
     },
@@ -81,4 +139,8 @@ export async function getStaticPaths() {
       })) || [],
     fallback: true,
   }
+}
+
+export async function getCurrentPostComments(slug) {
+  return getPostComments(slug, false)
 }

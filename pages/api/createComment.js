@@ -10,8 +10,9 @@ const client = sanityClient(config)
 
 export default async function createComment(req, res) {
   const { _id, name, email, comment, approved} = JSON.parse(req.body)
+  let createdComment = null
   try {
-    await client.create({
+    const response = await client.create({
       _type: 'comment',
       post: {
         _type: 'reference',
@@ -22,9 +23,18 @@ export default async function createComment(req, res) {
       comment,
       approved
     })
+    createdComment = {
+      _createdAt: response._createdAt,
+      _id: response._id,
+      approved: response.approved,
+      comment: response.comment,
+      email: response.email,
+      name: response.name,
+      post: response.post,
+    }
   } catch (err) {
     console.error(err)
     return res.status(500).json({message: `Couldn't submit comment`, err})
   }
-  return res.status(200).json({ message: 'Comment submitted' })
+  return res.status(200).json(createdComment)
 }

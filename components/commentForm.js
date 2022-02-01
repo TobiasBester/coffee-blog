@@ -2,29 +2,34 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getFromLocalStorage, isNotBlank, saveToLocalStorage } from '../lib/utils'
 
-export default function CommentForm ({_id}) {
+export default function CommentForm ({_id, addComment}) {
   const [formData, setFormData] = useState()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
   const defaultValues = getDefaultFormValues()
-  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues })
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues })
   const onSubmit = async data => {
     setIsSubmitting(true)
-    let response
+    let addedComment
     setFormData(data)
     data.approved = true
 
     storeFormValues(data)
 
     try {
-      response = await fetch('/api/createComment', {
+      addedComment = await fetch('/api/createComment', {
         method: 'POST',
         body: JSON.stringify(data),
         type: 'application/json'
       })
       setIsSubmitting(false)
       setHasSubmitted(true)
+      addedComment.json()
+                  .then(res => {
+                    addComment(res)
+                    reset(defaultValues)
+                  })
     } catch (err) {
       setFormData(err)
     }
@@ -32,19 +37,6 @@ export default function CommentForm ({_id}) {
 
   if (isSubmitting) {
     return <h3>Submitting comment…</h3>
-  }
-  if (hasSubmitted) {
-    return (
-    <>
-      <h3>Thanks for your comment!</h3>
-      <ul>
-        <li>
-          Name: {formData.name} <br />
-          Email: {formData.email} <br />
-          Comment: {formData.comment}
-        </li>
-      </ul>
-    </>)
   }
 
   return (
@@ -92,6 +84,9 @@ export default function CommentForm ({_id}) {
         </label>
         <input type="submit" className="shadow bg-yellow-800 hover:bg-yellow-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" />
       </form>
+      {hasSubmitted && (
+        <h3 className="text-xl mt-4">Thanks for your comment!</h3>
+      )}
     </>
   )
 }
@@ -102,6 +97,7 @@ const getDefaultFormValues = () => {
   const lsEmail = getFromLocalStorage('coffee-blog-comments-email')
   if (isNotBlank(lsName)) defaultValues.name = lsName
   if (isNotBlank(lsEmail)) defaultValues.email = lsEmail
+  defaultValues.comment = ''
   return defaultValues
 }
 
