@@ -51,8 +51,8 @@ export default function Post({ post, morePosts, slug, preview }) {
     })
   }
 
-  if (post.commentsEnabled) {
-    useEffect(() => {
+  useEffect(() => {
+    if (post?.commentsEnabled) {
       getCurrentPostComments(slug)
         .then(data => setState({
           loading: false,
@@ -64,8 +64,8 @@ export default function Post({ post, morePosts, slug, preview }) {
           comments: [],
           error
         }))
-    }, [])
-  }
+    }
+  }, [post])
 
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
