@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { getFromLocalStorage, isNotBlank, saveToLocalStorage } from '../lib/utils'
+import { getFromLocalStorage, isNotBlank, saveToLocalStorage } from '../../lib/utils'
 
-export default function CommentForm ({_id, addComment}) {
+export default function CommentForm ({_id, addComment, replyingTo}) {
   const [formData, setFormData] = useState()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -14,6 +14,9 @@ export default function CommentForm ({_id, addComment}) {
     let addedComment
     setFormData(data)
     data.approved = true
+    if (replyingTo) {
+      data.responseToId = replyingTo._id
+    }
 
     storeFormValues(data)
 
@@ -41,9 +44,11 @@ export default function CommentForm ({_id, addComment}) {
 
   return (
     <>
-      <p className="text-xl">Join in on the conversation!</p>
+      <p className="text-xl">
+        {replyingTo ? `Reply to ${replyingTo.name}` : 'Join in on the conversation!'}
+      </p>
       <p className="text-md mb-4">Your email will not be published.</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg" disabled>
+      <form className="w-full max-w-lg" disabled>
         <input {...register("_id")} type="hidden" name="_id" value={_id} />
         <label className="block mb-5">
           <span className="text-zinc-700">Name *</span>
@@ -82,7 +87,12 @@ export default function CommentForm ({_id, addComment}) {
           />
           {errors.comment && <span>{errors.comment.message}</span>}
         </label>
-        <input type="submit" className="shadow bg-yellow-800 hover:bg-yellow-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" />
+        <button
+          onClick={handleSubmit(onSubmit)}
+          className="shadow bg-yellow-800 hover:bg-yellow-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        >
+          {replyingTo ? 'Reply' : 'Submit'}
+        </button>
       </form>
       {hasSubmitted && (
         <h3 className="text-xl mt-4">Thanks for your comment!</h3>

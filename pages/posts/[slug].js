@@ -5,17 +5,24 @@ import PostBody from '../../components/post-body'
 import MoreStories from '../../components/more-stories'
 import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
-import Comments from '../../components/comments'
+import Comments from '../../components/comments/comments'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
 import { getAllPostsWithSlug, getPostAndMorePosts, getPostComments } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
-import CommentForm from '../../components/commentForm'
+import CommentForm from '../../components/comments/commentForm'
 import { useEffect, useState } from 'react'
 
 function CommentBlock ({ post, comments, loading, error, addComment }) {
+  const [replyToComment, setReplyToComment] = useState(undefined)
+  const clickReplyTo = (comment) => setReplyToComment(comment)
+  const onAddComment = (comment) => {
+    setReplyToComment(undefined)
+    addComment(comment)
+  }
+
   if (loading) {
     return (
       <h4 className="text-2xl">Loading Comments...</h4>
@@ -29,10 +36,23 @@ function CommentBlock ({ post, comments, loading, error, addComment }) {
   }
 
   return (
-    <>
-      <Comments comments={comments} />
-      <CommentForm _id={post._id} addComment={addComment} />
-    </>
+    <div className="flex flex-row flex-wrap">
+      <h2 className="mt-6 mb-4 text-4xl lg:text-6xl leading-tight basis-full">Comments:</h2>
+      <div className="basis-full md:basis-3/5 px-3 py-1">
+        <Comments
+          comments={comments}
+          replyToComment={replyToComment}
+          clickReplyTo={clickReplyTo}
+        />
+      </div>
+      <div className="basis-full md:basis-2/5 px-3 py-1">
+        <CommentForm
+          _id={post._id}
+          replyingTo={replyToComment}
+          addComment={onAddComment}
+        />
+      </div>
+    </div>
   )
 }
 

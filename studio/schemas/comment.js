@@ -28,6 +28,14 @@ export default {
         to: [
           {type: 'post'}
         ]
+      },
+      {
+        name: 'responseTo',
+        type: 'reference',
+        to: [
+          {type: 'comment'}
+        ],
+        weak: true
       }
     ],
     preview: {
