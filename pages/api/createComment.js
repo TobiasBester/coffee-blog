@@ -40,7 +40,7 @@ export default async function createComment(req, res) {
       email: response.email,
       name: response.name,
       post: response.post,
-      responseToId: response.responseTo._ref
+      responseToId: response.responseTo?._ref
     }
   } catch (err) {
     console.error(err)

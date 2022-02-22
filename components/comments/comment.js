@@ -1,4 +1,5 @@
 import DateTime from '../dateTime'
+import { useEffect, useRef } from 'react'
 
 function ReplyButton ({ canReplyTo, clickReplyTo, clickCancel }) {
   if (canReplyTo) {
@@ -23,13 +24,31 @@ function ReplyButton ({ canReplyTo, clickReplyTo, clickCancel }) {
   )
 }
 
-export default function Comment ({ _id, _createdAt, name, comment, isResponse = false, replyingTo, clickReplyTo }) {
+export default function Comment ({
+                                   _id,
+                                   _createdAt,
+                                   name,
+                                   comment,
+                                   isResponse = false,
+                                   replyingTo,
+                                   clickReplyTo,
+                                   newCommentId,
+                                 }) {
   const canReplyTo = !replyingTo || _id !== replyingTo._id
   const onClickReplyTo = () => clickReplyTo({ name, _id })
   const onClickCancel = () => clickReplyTo(undefined)
+  const testRef = useRef(null)
+  useEffect(() => {
+    if (newCommentId === _id) {
+      testRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      })
+    }
+  }, [newCommentId])
 
   return (
-    <li key={_id} className="mb-5">
+    <li key={_id} className="mb-5" ref={testRef}>
       {!isResponse && <hr className="mb-5"/>}
       <h4 className="mb-2 leading-tight"><strong>{name}</strong> <em>(<DateTime
         dateString={_createdAt}

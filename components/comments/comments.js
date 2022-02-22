@@ -1,6 +1,6 @@
 import Comment from './comment'
 
-export default function Comments ({ comments = [], replyToComment, clickReplyTo }) {
+export default function Comments ({ comments = [], replyToComment, clickReplyTo, newCommentId }) {
   const rootComments = comments?.filter(c => !c.responseToId) || []
 
   const responsesMap = {}
@@ -21,6 +21,7 @@ export default function Comments ({ comments = [], replyToComment, clickReplyTo 
             {...commentData}
             clickReplyTo={clickReplyTo}
             replyingTo={replyToComment}
+            newCommentId={newCommentId}
             isResponse={false}
           />
           <div>

@@ -15,7 +15,7 @@ import { CMS_NAME } from '../../lib/constants'
 import CommentForm from '../../components/comments/commentForm'
 import { useEffect, useState } from 'react'
 
-function CommentBlock ({ post, comments, loading, error, addComment }) {
+function CommentBlock ({ post, comments, loading, error, addComment, newCommentId }) {
   const [replyToComment, setReplyToComment] = useState(undefined)
   const clickReplyTo = (comment) => setReplyToComment(comment)
   const onAddComment = (comment) => {
@@ -43,6 +43,7 @@ function CommentBlock ({ post, comments, loading, error, addComment }) {
           comments={comments}
           replyToComment={replyToComment}
           clickReplyTo={clickReplyTo}
+          newCommentId={newCommentId}
         />
       </div>
       <div className="basis-full md:basis-2/5 px-3 py-1">
@@ -62,12 +63,15 @@ export default function Post({ post, morePosts, slug, preview }) {
     loading: true,
     comments: [],
     error: null,
+    newCommentId: null,
   })
   const addComment = (newComment) => {
     const comments = [...state.comments, newComment]
+    const newCommentId = newComment.responseToId || newComment._id
     setState({
       ...state,
-      comments
+      comments,
+      newCommentId
     })
   }
 
@@ -77,11 +81,13 @@ export default function Post({ post, morePosts, slug, preview }) {
         .then(data => setState({
           loading: false,
           comments: data,
-          error: null
+          error: null,
+          newCommentId: null
         }))
         .catch(error => setState({
           loading: false,
           comments: [],
+          newCommentId: null,
           error
         }))
     }
@@ -122,6 +128,7 @@ export default function Post({ post, morePosts, slug, preview }) {
                  error={state.error}
                  loading={state.loading}
                  addComment={addComment}
+                 newCommentId={state.newCommentId}
                />
              </>
             }

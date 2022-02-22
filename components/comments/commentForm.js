@@ -14,6 +14,7 @@ export default function CommentForm ({_id, addComment, replyingTo}) {
     let addedComment
     setFormData(data)
     data.approved = true
+    data._id = _id
     if (replyingTo) {
       data.responseToId = replyingTo._id
     }
