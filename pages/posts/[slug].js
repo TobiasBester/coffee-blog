@@ -116,6 +116,7 @@ export default function Post({ post, morePosts, slug, preview }) {
                 coverImage={post.coverImage}
                 date={post.date}
                 author={post.author}
+                categories={post.categories}
               />
               <PostBody content={post.body} />
             </article>

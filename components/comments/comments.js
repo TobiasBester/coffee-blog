@@ -25,10 +25,11 @@ export default function Comments ({ comments = [], replyToComment, clickReplyTo,
             isResponse={false}
           />
           <div>
-            {responsesMap[commentData._id] && (<ul className="ml-5 p-2 pt-5 border border-2 border-amber-800 rounded-md">
-                {responsesMap[commentData._id].map((responseData) => (
-                  <Comment
-                    key={responseData._id}
+            {responsesMap[commentData._id] &&
+             (<ul className="ml-5 p-2 pt-5 border border-2 border-amber-800 rounded-md">
+                 {responsesMap[commentData._id].map((responseData) => (
+                   <Comment
+                     key={responseData._id}
                     {...responseData}
                     clickReplyTo={clickReplyTo}
                     replyingTo={replyToComment}
@@ -43,10 +44,6 @@ export default function Comments ({ comments = [], replyToComment, clickReplyTo,
         ))
       }
     </ul>) : (<h3>Be the first to add a comment!</h3>)
-
-  // TODO: Remove all Next/Vercel/Sanity text
-  // TODO: Figure out how to block certain commenters?
-  // TODO: Edit out footer with something
 
   return (
     <>

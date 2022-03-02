@@ -6,7 +6,7 @@ export default function Intro() {
       <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
         {BLOG_TITLE}
       </h1>
-      <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
+      <h4 className="text-center md:text-left text-lg md:text-2xl mt-5 md:pl-8">
         {BLOG_SUBTITLE}
       </h4>
     </section>
