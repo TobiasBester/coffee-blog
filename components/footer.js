@@ -1,6 +1,6 @@
 import Container from './container'
-import { BLOG_TITLE, TWITTER_LINK } from '../lib/constants'
-import { BsTwitter } from 'react-icons/bs'
+import { BLOG_TITLE, INSTAGRAM_LINK, TWITTER_LINK } from '../lib/constants'
+import { BsInstagram, BsTwitter } from 'react-icons/bs'
 
 export default function Footer() {
   return (
@@ -14,6 +14,9 @@ export default function Footer() {
             <span className="text-xl mx-2">Get in touch:</span>
             <a className="text-2xl mx-2" target="_blank" href={TWITTER_LINK}>
               <BsTwitter />
+            </a>
+            <a className="text-2xl mx-2" target="_blank" href={INSTAGRAM_LINK}>
+              <BsInstagram />
             </a>
           </div>
         </div>
