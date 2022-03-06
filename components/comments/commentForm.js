@@ -104,8 +104,8 @@ export default function CommentForm ({_id, addComment, replyingTo}) {
 
 const getDefaultFormValues = () => {
   const defaultValues = {}
-  const lsName = getFromLocalStorage('coffee-blog-comments-name')
-  const lsEmail = getFromLocalStorage('coffee-blog-comments-email')
+  const lsName = getFromLocalStorage('tobias-blog-comments-name')
+  const lsEmail = getFromLocalStorage('tobias-blog-comments-email')
   if (isNotBlank(lsName)) defaultValues.name = lsName
   if (isNotBlank(lsEmail)) defaultValues.email = lsEmail
   defaultValues.comment = ''
@@ -113,6 +113,6 @@ const getDefaultFormValues = () => {
 }
 
 const storeFormValues = ({ name, email }) => {
-  saveToLocalStorage('coffee-blog-comments-name', name)
-  saveToLocalStorage('coffee-blog-comments-email', email)
+  saveToLocalStorage('tobias-blog-comments-name', name)
+  saveToLocalStorage('tobias-blog-comments-email', email)
 }

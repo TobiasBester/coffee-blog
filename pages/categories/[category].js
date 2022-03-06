@@ -16,7 +16,7 @@ export default function CategoryPage({ allPosts, preview }) {
     <>
       <Layout preview={preview}>
         <Head>
-          <title>Coffee Blog posts | {category?.toUpperCase()}</title>
+          <title>Tobias Blogster posts | {category?.toUpperCase()}</title>
         </Head>
         <Container>
           <Intro />
