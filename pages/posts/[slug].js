@@ -11,7 +11,7 @@ import Layout from '../../components/layout'
 import { getAllPostsWithSlug, getPostAndMorePosts, getPostComments } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
-import { CMS_NAME } from '../../lib/constants'
+import { BLOG_TITLE } from '../../lib/constants'
 import CommentForm from '../../components/comments/commentForm'
 import { useEffect, useState } from 'react'
 
@@ -107,7 +107,7 @@ export default function Post({ post, morePosts, slug, preview }) {
             <article>
               <Head>
                 <title>
-                  {post.title} | Next.js Blog Example with {CMS_NAME}
+                  {post.title} | {BLOG_TITLE}
                 </title>
                 {/* <meta property="og:image" content={post.ogImage.url} /> */}
               </Head>

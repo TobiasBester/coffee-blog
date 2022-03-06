@@ -1,5 +1,6 @@
 import Container from './container'
-import { BLOG_TITLE } from '../lib/constants'
+import { BLOG_TITLE, TWITTER_LINK } from '../lib/constants'
+import { BsTwitter } from 'react-icons/bs'
 
 export default function Footer() {
   return (
@@ -10,8 +11,10 @@ export default function Footer() {
             {BLOG_TITLE}
           </h3>
           <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
-            <span className="text-xl mx-2">Socials</span>
-            <span className="text-2xl mx-2">Get in touch!</span>
+            <span className="text-xl mx-2">Get in touch:</span>
+            <a className="text-2xl mx-2" target="_blank" href={TWITTER_LINK}>
+              <BsTwitter />
+            </a>
           </div>
         </div>
       </Container>

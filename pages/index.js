@@ -17,7 +17,7 @@ export default function Index({ allPosts, preview }) {
         </Head>
         <Container>
           <Intro />
-          {heroPost && (
+          {heroPost ? (
             <HeroPost
               title={heroPost.title}
               coverImage={heroPost.coverImage}
@@ -26,6 +26,8 @@ export default function Index({ allPosts, preview }) {
               slug={heroPost.slug}
               excerpt={heroPost.excerpt}
             />
+          ) : (
+            <h2 className="text-4xl">No Posts... yet</h2>
           )}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>

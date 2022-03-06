@@ -9,6 +9,11 @@ article a {
 @tailwind utilities;
 
 body {
-    background: antiquewhite;
-    color: saddlebrown;
+    background: #480c0c;
+    color: white;
+    font-family: Verdana, sans-serif;
+}
+
+footer {
+    color: #480c0c;
 }
